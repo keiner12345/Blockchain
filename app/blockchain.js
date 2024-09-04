@@ -1,4 +1,4 @@
-import {sha256} from "js-sha256";
+import {sha224, sha256} from "js-sha256";
 
 class Block {
     constructor(previousBlock, transactions, timeStamp, difficulty){
@@ -32,9 +32,26 @@ class BlockChain{
     createGenesisBlock(){
         return new Block('', 'genesis block', new Date(), this.difficulty);
     }
+    addNewBlock(transactions){
+        const newBlock = new Block(this.chain[this.chain.length - 1].hash, transactions,new Date(), this.difficulty);
+        this.chain.push(newBlock)
+    }
+    validateBlock(block){
+        const hash = sha256(`${block.nonce}${block.previousBlock}${block.transactions}`);
+        if (block.hash === hash){
+            console.log('Valid Block');
+        }else{
+            console.log("TEMPERED BLOCK");
+
+        }
+    }
 }
 const blockChain = new BlockChain();
-console.log(blockChain);
+blockChain.addNewBlock('Nuevas transacciones');
+blockChain.addNewBlock('ESTO E KLIMBER')
+blockChain. validateBlock(blockChain)
+    console.log(blockChain)
+
 
 
 
